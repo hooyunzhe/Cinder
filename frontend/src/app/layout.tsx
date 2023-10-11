@@ -1,9 +1,10 @@
+import '@mantine/core/styles.css';
 import type { Metadata } from 'next';
 import { MantineProvider } from '@mantine/core';
 
 export const metadata: Metadata = {
-  title: '42KL Wildcard Hackathon',
-  description: 'The worst possible UX design',
+  title: 'Cinder',
+  description: 'Match Made in Hell',
 };
 
 export default function RootLayout({

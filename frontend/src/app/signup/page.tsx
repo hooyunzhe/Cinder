@@ -11,7 +11,10 @@ import {
 import { useState } from 'react';
 
 export default function Home() {
-  const [age, setAge] = useState(21);
+  const [name, setName] = useState('');
+  const [birthDay, setBirthDay] = useState(1);
+  const [birthMonth, setBirthMonth] = useState(1);
+  const [birthYear, setBirthYear] = useState(2000);
 
   return (
     <Flex
@@ -31,19 +34,57 @@ export default function Home() {
         gap='3vh'
       >
         <Title>Profile</Title>
-        <TextInput placeholder='Name' />
-        <Flex w='15%' justify='space-between'>
-          <Text>Age</Text>
-          <Slider
-            w='30%'
-            value={age}
-            onChange={setAge}
-            marks={[
-              { value: 0, label: '0' },
-              { value: 50, label: '~' },
-              { value: 100, label: '100' },
-            ]}
-          />
+        <TextInput
+          w='25%'
+          placeholder='Name'
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+        />
+        <Flex w='25%' h='5%' justify='space-around' align='center'>
+          <Text>Birthday</Text>
+          <Flex
+            w='50%'
+            h='100%'
+            direction='column'
+            justify='space-between'
+            align='center'
+          >
+            <Flex w='100%' justify='center'>
+              <Slider
+                w='35%'
+                min={1}
+                max={31}
+                value={birthDay}
+                onChange={(value) => {
+                  setBirthDay(value);
+                  setName(`Born on day ${value} of the month`);
+                }}
+                marks={[{ value: 16, label: 'Day' }]}
+              />
+              <Slider
+                w='20%'
+                min={1}
+                max={12}
+                value={birthMonth}
+                onChange={(value) => {
+                  setBirthMonth(value);
+                  setName(`Born in month ${value} of the year`);
+                }}
+                marks={[{ value: 16, label: 'Month' }]}
+              />
+            </Flex>
+            <Slider
+              w='70%'
+              min={1923}
+              max={2005}
+              value={birthYear}
+              onChange={(value) => {
+                setBirthYear(value);
+                setName(`${2023 - value} years old person`);
+              }}
+              marks={[{ value: 1964, label: 'Year' }]}
+            />
+          </Flex>
         </Flex>
       </Flex>
     </Flex>

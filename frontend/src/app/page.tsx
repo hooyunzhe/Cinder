@@ -1,6 +1,8 @@
 'use client';
 import '@mantine/core/styles.css';
 import { Center, Text } from '@mantine/core';
+import Profile from './components/Profile';
+import MyTabs from './components/Mytabs';
 
 export default function Home() {
   return (
@@ -14,7 +16,8 @@ export default function Home() {
       rgb(249, 181, 172)
     )'
     >
-      <Text
+      <MyTabs />
+      {/* <Text
         size='5vw'
         variant='gradient'
         gradient={{
@@ -23,8 +26,9 @@ export default function Home() {
           deg: 90,
         }}
       >
-        42KL Wildcard Hackathon
-      </Text>
+        Cinder
+      </Text> */}
+      <Profile />
     </Center>
   );
 }

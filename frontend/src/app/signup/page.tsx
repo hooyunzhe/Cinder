@@ -1,9 +1,12 @@
 'use client';
 import {
+  Alert,
+  Center,
   Button,
   Chip,
   Flex,
   Image,
+  Modal,
   NativeSelect,
   SimpleGrid,
   Slider,
@@ -11,6 +14,7 @@ import {
   TextInput,
   Textarea,
 } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -24,23 +28,56 @@ export default function Home() {
   const [indoorHobbies, setIndoorHobbies] = useState(['books']);
   const [continuePressCount, setContinuePressCount] = useState(0);
   const { push } = useRouter();
+  const [opened, { open, close }] = useDisclosure(false);
 
   return (
     <Flex
       w='100vw'
       h='100vh'
+      justify='space-between'
+      align='center'
       bg='linear-gradient(90deg, rgb(117, 185, 190), rgb(208, 214, 181), rgb(249, 181, 172))'
     >
-      <SimpleGrid cols={3}>
-        <Image src='profile_placeholder.png' alt='profile_1' />
-        <Image src='profile_placeholder.png' alt='profile_2' />
-        <Image src='profile_placeholder.png' alt='profile_3' />
-        <Image src='profile_placeholder.png' alt='profile_4' />
-        <Image src='profile_placeholder.png' alt='profile_5' />
-        <Image src='profile_placeholder.png' alt='profile_6' />
+      <SimpleGrid
+        w='70%'
+        h='100%'
+        spacing='3vw'
+        verticalSpacing='3vh'
+        px='2vw'
+        py='3vh'
+        cols={3}
+      >
+        {Array(6)
+          .fill(0)
+          .map((x, i) => (
+            <Center
+              key={i}
+              bg='#AAAAAA'
+              style={{
+                borderRadius: '15px',
+              }}
+              onClick={open}
+            >
+              <Text size='10rem' c='white'>
+                +
+              </Text>
+            </Center>
+          ))}
       </SimpleGrid>
+      <Modal
+        opened={opened}
+        onClose={close}
+        withCloseButton={false}
+        padding='0'
+        centered
+        size='50%'
+      >
+        <Alert h='50vh' variant='filled' color='red' title='ALERT'>
+          ERROR: FAILED TO ADD PROFILE PHOTO
+        </Alert>
+      </Modal>
       <Flex
-        w='40%'
+        w='30%'
         h='100%'
         direction='column'
         justify='center'
@@ -49,6 +86,7 @@ export default function Home() {
       >
         <TextInput
           w='90%'
+          label='Name'
           placeholder='Name'
           value={name}
           onChange={(event) => setName(event.target.value)}
@@ -61,6 +99,7 @@ export default function Home() {
         <Textarea
           w='90%'
           variant='filled'
+          label='Bio'
           placeholder='Bio'
           value={bio}
           onChange={(event) => setBio(event.target.value)}
@@ -87,7 +126,7 @@ export default function Home() {
             <Text>Birthday</Text>
             <Flex w='100%' justify='space-around'>
               <Slider
-                w='35%'
+                w='25%'
                 min={1}
                 max={31}
                 value={birthDay}
@@ -97,7 +136,7 @@ export default function Home() {
                 }}
               />
               <Slider
-                w='20%'
+                w='10%'
                 min={1}
                 max={12}
                 value={birthMonth}
@@ -108,7 +147,7 @@ export default function Home() {
               />
             </Flex>
             <Slider
-              w='70%'
+              w='60%'
               min={1923}
               max={2005}
               value={birthYear}
@@ -125,9 +164,10 @@ export default function Home() {
           direction='column'
           justify='space-between'
           align='center'
+          gap='1vh'
         >
           <Text>Hobbies</Text>
-          <Flex>
+          <Flex w='100%' justify='space-around'>
             <Chip.Group
               multiple
               value={outdoorHobbies}
@@ -143,12 +183,18 @@ export default function Home() {
                 );
               }}
             >
-              <Chip value='travel'>Travel</Chip>
-              <Chip value='hiking'>Hiking</Chip>
-              <Chip value='camping'>Camping</Chip>
+              <Chip size='xl' value='travel'>
+                Travel
+              </Chip>
+              <Chip size='xl' value='hiking'>
+                Hiking
+              </Chip>
+              <Chip size='xl' value='camping'>
+                Camping
+              </Chip>
             </Chip.Group>
           </Flex>
-          <Flex>
+          <Flex w='100%' justify='space-around'>
             <Chip.Group
               multiple
               value={indoorHobbies}
@@ -164,20 +210,33 @@ export default function Home() {
                 );
               }}
             >
-              <Chip value='music'>Music</Chip>
-              <Chip value='books'>Books</Chip>
-              <Chip value='movies'>Movies</Chip>
+              <Chip size='xl' value='music'>
+                Music
+              </Chip>
+              <Chip size='xl' value='books'>
+                Books
+              </Chip>
+              <Chip size='xl' value='movies'>
+                Movies
+              </Chip>
             </Chip.Group>
           </Flex>
         </Flex>
-        <Button
+        <NativeSelect
           w='90%'
+          label='Height'
+          data={Array.from({ length: 100 }, (x, i) => 1000 + i * 10).map(
+            (height) => `${height}mm`,
+          )}
+        />
+        <Button
+          w='50%'
           onClick={() => setContinuePressCount((count) => count + 1)}
         >
           Continue
         </Button>
         <Button
-          w='90%'
+          w='50%'
           {...(continuePressCount < 5 && { display: 'none' })}
           onClick={() => push('/home')}
         >

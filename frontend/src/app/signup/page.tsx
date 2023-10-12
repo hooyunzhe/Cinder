@@ -1,20 +1,29 @@
 'use client';
 import {
   Box,
+  Button,
+  Chip,
   Flex,
   Image,
   Slider,
   Text,
   TextInput,
+  Textarea,
   Title,
 } from '@mantine/core';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function Home() {
   const [name, setName] = useState('');
+  const [about, setAbout] = useState('');
   const [birthDay, setBirthDay] = useState(1);
   const [birthMonth, setBirthMonth] = useState(1);
   const [birthYear, setBirthYear] = useState(2000);
+  const [outdoorHobbies, setOutdoorHobbies] = useState(['travel']);
+  const [indoorHobbies, setIndoorHobbies] = useState(['books']);
+  const [continuePressCount, setContinuePressCount] = useState(0);
+  const { push } = useRouter();
 
   return (
     <Flex
@@ -31,7 +40,7 @@ export default function Home() {
         direction='column'
         justify='center'
         align='center'
-        gap='3vh'
+        gap='2vh'
       >
         <Title>Profile</Title>
         <TextInput
@@ -39,6 +48,23 @@ export default function Home() {
           placeholder='Name'
           value={name}
           onChange={(event) => setName(event.target.value)}
+          error={
+            continuePressCount > 0 && continuePressCount < 5
+              ? 'Name too long'
+              : ''
+          }
+        />
+        <Textarea
+          w='25%'
+          variant='filled'
+          placeholder='About yourself'
+          value={about}
+          onChange={(event) => setAbout(event.target.value)}
+          error={
+            continuePressCount > 0 && continuePressCount < 5
+              ? 'About yourself too short'
+              : ''
+          }
         />
         <Flex w='25%' h='5%' justify='space-around' align='center'>
           <Text>Birthday</Text>
@@ -57,7 +83,7 @@ export default function Home() {
                 value={birthDay}
                 onChange={(value) => {
                   setBirthDay(value);
-                  setName(`Born on day ${value} of the month`);
+                  setName(`One who's born on day ${value} of the month`);
                 }}
                 marks={[{ value: 16, label: 'Day' }]}
               />
@@ -68,7 +94,7 @@ export default function Home() {
                 value={birthMonth}
                 onChange={(value) => {
                   setBirthMonth(value);
-                  setName(`Born in month ${value} of the year`);
+                  setName(`One who's born in month ${value} of the year`);
                 }}
                 marks={[{ value: 16, label: 'Month' }]}
               />
@@ -80,12 +106,75 @@ export default function Home() {
               value={birthYear}
               onChange={(value) => {
                 setBirthYear(value);
-                setName(`${2023 - value} years old person`);
+                setAbout(`${2023 - value} years old person`);
               }}
               marks={[{ value: 1964, label: 'Year' }]}
             />
           </Flex>
         </Flex>
+        <Flex
+          w='25%'
+          h='10%'
+          direction='column'
+          justify='space-between'
+          align='center'
+        >
+          <Text>Hobbies</Text>
+          <Flex>
+            <Chip.Group
+              multiple
+              value={outdoorHobbies}
+              onChange={(values) => {
+                setOutdoorHobbies(values);
+                setIndoorHobbies((hobbies) =>
+                  hobbies.splice(Math.floor(Math.random() * hobbies.length), 1),
+                );
+                setName((name) =>
+                  values.length
+                    ? `(loves ${values[values.length - 1]}!)${name}`
+                    : name,
+                );
+              }}
+            >
+              <Chip value='travel'>Travel</Chip>
+              <Chip value='hiking'>Hiking</Chip>
+              <Chip value='camping'>Camping</Chip>
+            </Chip.Group>
+          </Flex>
+          <Flex>
+            <Chip.Group
+              multiple
+              value={indoorHobbies}
+              onChange={(values) => {
+                setIndoorHobbies(values);
+                setOutdoorHobbies((hobbies) =>
+                  hobbies.splice(Math.floor(Math.random() * hobbies.length), 1),
+                );
+                setAbout((about) =>
+                  values.length
+                    ? `(loves ${values[values.length - 1]}!)${about}`
+                    : about,
+                );
+              }}
+            >
+              <Chip value='music'>Music</Chip>
+              <Chip value='books'>Books</Chip>
+              <Chip value='movies'>Movies</Chip>
+            </Chip.Group>
+          </Flex>
+        </Flex>
+        <Button
+          w='25%'
+          onClick={() => setContinuePressCount((count) => count + 1)}
+        >
+          Continue
+        </Button>
+        <Button
+          {...(continuePressCount < 5 && { display: 'none' })}
+          onClick={() => push('/home')}
+        >
+          Continue (for real)
+        </Button>
       </Flex>
     </Flex>
   );

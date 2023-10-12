@@ -13,7 +13,7 @@ import {
 export default function Profile() {
   return (
     <Flex w='20vw' h='60vh' direction='column'>
-      <Image src='surfer.jpg' height={500} alt='Surfer' />
+      <Image src='surfer.jpg' height={400} alt='Surfer' />
       <Flex
         w='100%'
         h='40%'
@@ -42,17 +42,14 @@ export default function Profile() {
           James, 31
         </Text>
         <Text c='dimmed'>
-          "Hey there! 🏄‍♂️ Catching waves and living the California dream. I'm
-          James, and I ride the tides of life both on and off the board. When
-          I'm not out on the water, you can find me enjoying the sunsets,
-          exploring hidden beach spots, and savoring every moment this beautiful
-          state has to offer. Looking for someone to ride the waves of life with
-          – both in and out of the ocean. Swipe right, and let's see where the
-          tide takes us!"
+          "Hey there! 🏄‍♂️ I'm James, and I ride the tides of life both on and off
+          the board. Looking for someone to ride the waves of life with – both
+          in and out of the ocean. Swipe right, and let's see where the tide
+          takes us!"
         </Text>
 
         <Flex
-          mih={80}
+          mih={50}
           bg='rgba(0, 0, 0, 0)'
           gap='md'
           justify='center'

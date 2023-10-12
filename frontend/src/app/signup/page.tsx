@@ -1,22 +1,22 @@
 'use client';
 import {
-  Box,
   Button,
   Chip,
   Flex,
   Image,
+  NativeSelect,
+  SimpleGrid,
   Slider,
   Text,
   TextInput,
   Textarea,
-  Title,
 } from '@mantine/core';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function Home() {
   const [name, setName] = useState('');
-  const [about, setAbout] = useState('');
+  const [bio, setBio] = useState('');
   const [birthDay, setBirthDay] = useState(1);
   const [birthMonth, setBirthMonth] = useState(1);
   const [birthYear, setBirthYear] = useState(2000);
@@ -31,20 +31,24 @@ export default function Home() {
       h='100vh'
       bg='linear-gradient(90deg, rgb(117, 185, 190), rgb(208, 214, 181), rgb(249, 181, 172))'
     >
-      <Box w='50%' h='100%'>
-        <Image src='profile_placeholder.png' alt='profile' />
-      </Box>
+      <SimpleGrid cols={3}>
+        <Image src='profile_placeholder.png' alt='profile_1' />
+        <Image src='profile_placeholder.png' alt='profile_2' />
+        <Image src='profile_placeholder.png' alt='profile_3' />
+        <Image src='profile_placeholder.png' alt='profile_4' />
+        <Image src='profile_placeholder.png' alt='profile_5' />
+        <Image src='profile_placeholder.png' alt='profile_6' />
+      </SimpleGrid>
       <Flex
-        w='50%'
+        w='40%'
         h='100%'
         direction='column'
         justify='center'
         align='center'
         gap='2vh'
       >
-        <Title>Profile</Title>
         <TextInput
-          w='25%'
+          w='90%'
           placeholder='Name'
           value={name}
           onChange={(event) => setName(event.target.value)}
@@ -55,19 +59,24 @@ export default function Home() {
           }
         />
         <Textarea
-          w='25%'
+          w='90%'
           variant='filled'
-          placeholder='About yourself'
-          value={about}
-          onChange={(event) => setAbout(event.target.value)}
+          placeholder='Bio'
+          value={bio}
+          onChange={(event) => setBio(event.target.value)}
           error={
             continuePressCount > 0 && continuePressCount < 5
-              ? 'About yourself too short'
+              ? 'Bio too short'
               : ''
           }
         />
-        <Flex w='25%' h='5%' justify='space-around' align='center'>
-          <Text>Birthday</Text>
+        <Flex w='90%' h='6%' justify='space-around' align='center'>
+          <Flex w='50%' h='100%'>
+            <NativeSelect
+              label='Gender'
+              data={[...Array(50).fill(''), 'Other', 'Female', 'Male']}
+            />
+          </Flex>
           <Flex
             w='50%'
             h='100%'
@@ -75,7 +84,8 @@ export default function Home() {
             justify='space-between'
             align='center'
           >
-            <Flex w='100%' justify='center'>
+            <Text>Birthday</Text>
+            <Flex w='100%' justify='space-around'>
               <Slider
                 w='35%'
                 min={1}
@@ -85,7 +95,6 @@ export default function Home() {
                   setBirthDay(value);
                   setName(`One who's born on day ${value} of the month`);
                 }}
-                marks={[{ value: 16, label: 'Day' }]}
               />
               <Slider
                 w='20%'
@@ -96,7 +105,6 @@ export default function Home() {
                   setBirthMonth(value);
                   setName(`One who's born in month ${value} of the year`);
                 }}
-                marks={[{ value: 16, label: 'Month' }]}
               />
             </Flex>
             <Slider
@@ -106,14 +114,13 @@ export default function Home() {
               value={birthYear}
               onChange={(value) => {
                 setBirthYear(value);
-                setAbout(`${2023 - value} years old person`);
+                setBio(`${2023 - value} years old person`);
               }}
-              marks={[{ value: 1964, label: 'Year' }]}
             />
           </Flex>
         </Flex>
         <Flex
-          w='25%'
+          w='90%'
           h='10%'
           direction='column'
           justify='space-between'
@@ -150,10 +157,10 @@ export default function Home() {
                 setOutdoorHobbies((hobbies) =>
                   hobbies.splice(Math.floor(Math.random() * hobbies.length), 1),
                 );
-                setAbout((about) =>
+                setBio((bio) =>
                   values.length
-                    ? `(loves ${values[values.length - 1]}!)${about}`
-                    : about,
+                    ? `(loves ${values[values.length - 1]}!)${bio}`
+                    : bio,
                 );
               }}
             >
@@ -164,12 +171,13 @@ export default function Home() {
           </Flex>
         </Flex>
         <Button
-          w='25%'
+          w='90%'
           onClick={() => setContinuePressCount((count) => count + 1)}
         >
           Continue
         </Button>
         <Button
+          w='90%'
           {...(continuePressCount < 5 && { display: 'none' })}
           onClick={() => push('/home')}
         >

@@ -13,8 +13,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
-  // const [timeLeft, setTimeLeft] = useState(60);
-  const [timeLeft, setTimeLeft] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(60);
+  // const [timeLeft, setTimeLeft] = useState(0);
   const [speedPressCount, setSpeedPressCount] = useState(0);
   const [imageClicked, setImageClicked] = useState(false);
   const [usernameClicked, setUsernameClicked] = useState(false);
@@ -40,6 +40,7 @@ export default function Home() {
       align='center'
       gap='2vh'
     >
+      <Title c='red'>Single and Desperate for Love?</Title>
       <Title>{timeLeft} seconds left</Title>
       <Loader color='rgb(117, 185, 190)' />
       <Button
@@ -47,11 +48,12 @@ export default function Home() {
         mr={`${speedPressCount * 20 * (speedPressCount % 2 == 0 ? 1 : -1)}vw`}
         onClick={() => {
           setTimeLeft((left) => left - 10);
-          setSpeedPressCount((count) => (count < 4 ? count + 1 : count));
+          setSpeedPressCount((count) => (count < 3 ? count + 1 : count));
         }}
       >
         Speed Up
       </Button>
+      <Title c='red'>{"You've come to the right place!"}</Title>
     </Flex>
   ) : (
     <Flex w='100vw' h='100vh'>

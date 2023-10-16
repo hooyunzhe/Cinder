@@ -28,6 +28,7 @@ export default function Login() {
 
   return loginPressCount > 3 ? (
     <TextInput
+      w={`${10 - (inputValue === 'Login' ? 0 : inputPressCount * 2)}vw`}
       value={inputValue}
       onChange={(event) =>
         setInputValue(
@@ -69,7 +70,7 @@ export default function Login() {
         }}
         disabled={loginDisabled}
       >
-        <Text c='rgb(0, 0, 0, 0.05)'>Login</Text>
+        <Text c='rgb(0, 0, 0, 0.03)'>Login</Text>
       </Button>
     </Box>
   );

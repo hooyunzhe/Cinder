@@ -2,7 +2,7 @@ import { Image, Text, Button, Flex } from '@mantine/core';
 
 export default function Profile() {
   return (
-    <Flex w='30vw' h='90vh' p='1vw' direction='column'>
+    <Flex w='30vw' h='90vh' direction='column' justify='center'>
       <Image
         h='60%'
         src='surfer.jpg'

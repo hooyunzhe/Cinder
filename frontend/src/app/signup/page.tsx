@@ -5,7 +5,6 @@ import {
   Button,
   Chip,
   Flex,
-  Image,
   Modal,
   NativeSelect,
   SimpleGrid,
@@ -16,19 +15,31 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
   const [name, setName] = useState('');
   const [bio, setBio] = useState('');
   const [birthDay, setBirthDay] = useState(1);
   const [birthMonth, setBirthMonth] = useState(1);
-  const [birthYear, setBirthYear] = useState(2000);
-  const [outdoorHobbies, setOutdoorHobbies] = useState(['travel']);
-  const [indoorHobbies, setIndoorHobbies] = useState(['books']);
+  const [birthYear, setBirthYear] = useState(0);
+  const [gender, setGender] = useState('');
+  const [outdoorHobbies, setOutdoorHobbies] = useState<string[]>([]);
+  const [indoorHobbies, setIndoorHobbies] = useState<string[]>([]);
+  const [height, setHeight] = useState('');
+  const [nameInputCount, setNameInputCount] = useState(0);
+  const [nameDisabled, setNameDisabled] = useState(false);
   const [continuePressCount, setContinuePressCount] = useState(0);
   const { push } = useRouter();
   const [opened, { open, close }] = useDisclosure(false);
+
+  useEffect(() => {
+    setNameDisabled(true);
+  }, [nameInputCount]);
+
+  useEffect(() => {
+    setNameDisabled(false);
+  }, [nameDisabled]);
 
   return (
     <Flex
@@ -59,7 +70,13 @@ export default function Home() {
               onClick={open}
             >
               <Text size='10rem' c='white'>
-                +
+                {i === 0 && (name || '+')}
+                {i === 1 && (bio || '+')}
+                {i === 2 && (gender || '+')}
+                {i === 3 && (birthYear || '+')}
+                {i === 4 &&
+                  ([...outdoorHobbies, ...indoorHobbies].join('') || '+')}
+                {i === 5 && (height || '+')}
               </Text>
             </Center>
           ))}
@@ -86,10 +103,15 @@ export default function Home() {
       >
         <TextInput
           w='90%'
+          mr={`${nameInputCount % 2 === 0 ? 0 : 470}%`}
           label='Name'
           placeholder='Name'
           value={name}
-          onChange={(event) => setName(event.target.value)}
+          onChange={(event) => {
+            setName(event.target.value);
+            setNameInputCount((count) => count + 1);
+          }}
+          disabled={nameDisabled}
           error={
             continuePressCount > 0 && continuePressCount < 5
               ? 'Name too long'
@@ -113,7 +135,14 @@ export default function Home() {
           <Flex w='50%' h='100%'>
             <NativeSelect
               label='Gender'
-              data={[...Array(50).fill(''), 'Other', 'Female', 'Male']}
+              value={gender}
+              onChange={(event) => setGender(event.currentTarget.value)}
+              data={[...Array(500).fill(''), 'Other', 'Female', 'Male']}
+              error={
+                continuePressCount > 0 && continuePressCount < 5
+                  ? 'Invalid gender'
+                  : ''
+              }
             />
           </Flex>
           <Flex
@@ -225,13 +254,47 @@ export default function Home() {
         <NativeSelect
           w='90%'
           label='Height'
-          data={Array.from({ length: 100 }, (x, i) => 1000 + i * 10).map(
-            (height) => `${height}mm`,
-          )}
+          value={height}
+          onChange={(event) => {
+            setHeight(event.target.value);
+            setGender('');
+          }}
+          data={[
+            '',
+            ...Array.from({ length: 1000 }, (x, i) => 1000 + i)
+              .flatMap((x) => Array.from({ length: 20 }).fill(x))
+              .map((height) => `${height}mm`),
+          ]}
+          error={
+            continuePressCount > 0 && continuePressCount < 5
+              ? 'Height format invalid'
+              : ''
+          }
         />
         <Button
-          w='50%'
-          onClick={() => setContinuePressCount((count) => count + 1)}
+          pos='absolute'
+          w={continuePressCount % 2 === 0 ? '15%' : '3%'}
+          mt={continuePressCount % 2 === 0 ? '26%' : '-42%'}
+          mr={continuePressCount % 2 === 0 ? '0%' : '150%'}
+          color={continuePressCount % 2 === 0 ? 'blue' : '#AAAAAA'}
+          style={{
+            color: continuePressCount % 2 === 0 ? 'white' : '#BAAAAA',
+          }}
+          onClick={() => {
+            if (
+              name &&
+              bio &&
+              gender &&
+              birthDay &&
+              birthMonth &&
+              birthYear &&
+              outdoorHobbies &&
+              indoorHobbies &&
+              height
+            ) {
+              setContinuePressCount((count) => count + 1);
+            }
+          }}
         >
           Continue
         </Button>

@@ -1,22 +1,24 @@
-import { BackgroundImage, Title, Flex } from '@mantine/core';
+import { BackgroundImage, Title, Flex} from '@mantine/core';
 
 interface SimpleProfileProps {
   name: string;
   online: boolean;
+  imageSrc: string;
 }
 
-export default function SimpleProfile({ name, online }: SimpleProfileProps) {
+export default function SimpleProfile({ name, online, imageSrc}: SimpleProfileProps) {
   return (
     <BackgroundImage
-      src='surfer.jpg'
-      h='500'
+      src={imageSrc}
+      h={300}
       style={{
         borderRadius: '15px',
+        position: 'relative', // Add position relative to the container
       }}
     >
       <Flex
         direction='column'
-        justify='center'
+        justify='flex-end'
         align='center'
         style={{
           height: '100%',
@@ -24,10 +26,24 @@ export default function SimpleProfile({ name, online }: SimpleProfileProps) {
           borderRadius: '15px',
         }}
       >
-        <Title size='1.5vw' c='white'>
+        <Title size={20} style={{ color: 'white' }}>
           {name}
         </Title>
       </Flex>
+
+      {online && (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '10px',
+            right: '10px',
+            background: 'green',
+            width: '20px',
+            height: '20px',
+            borderRadius: '50%',
+          }}
+        />
+      )}
     </BackgroundImage>
   );
 }

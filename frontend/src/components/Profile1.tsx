@@ -12,7 +12,6 @@ export default function Profile() {
 
   const handleHide = () => {
     setIsHidden(true);
-    setShowProfile1(true);
   };
 
   const replicateButton = () => {
@@ -52,8 +51,8 @@ export default function Profile() {
     >
       <Image
         h='60%'
-        src='surfer.jpg'
-        alt='Surfer'
+        src='brazil.jpg'
+        alt='brazil'
         style={{
           borderTopLeftRadius: '15px',
           borderTopRightRadius: '15px',
